@@ -3,19 +3,19 @@ import java.io.File;
 public class FileUtils {
     // 1. 속성
     private String directoryPath;
-    private FileHandler fileHandler;
+    private ValidFile validFile;
 
     // 2. 생성자
-    public FileUtils(String directoryPath, FileHandler fileHandler){
+    public FileUtils(String directoryPath, ValidFile validFile){
         this.directoryPath = directoryPath;
-        this.fileHandler = fileHandler;
+        this.validFile = validFile;
     };
 
     // 3. 기능
     // 파일 리스트
     public void listFiles() {
         // 디렉터리 유효성 검사
-        if (!fileHandler.isDirectoryValid(directoryPath)){
+        if (!validFile.isDirectoryValid(directoryPath)){
             return;
         }
 

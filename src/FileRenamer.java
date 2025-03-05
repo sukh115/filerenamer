@@ -4,21 +4,21 @@ import java.util.Scanner;
 public class FileRenamer {
     // 속성
     private String directoryPath;
-    private FileHandler fileHandler;
+    private ValidFile validFile;
     private Scanner scanner;
     private FileUtils fileUtils;
 
     // 생성자
     public FileRenamer(String directoryPath) {
         this.directoryPath = directoryPath;
-        this.fileHandler = new FileHandler();
+        this.validFile = new ValidFile();
         this.scanner = new Scanner(System.in);
-        this.fileUtils = new FileUtils(directoryPath, fileHandler);
+        this.fileUtils = new FileUtils(directoryPath, validFile);
     }
 
     // 파일 이름 변경 작업
     public void renameFiles() {
-        if (!fileHandler.isDirectoryValid(directoryPath)) {
+        if (!validFile.isDirectoryValid(directoryPath)) {
             return;
         }
 
@@ -59,11 +59,11 @@ public class FileRenamer {
             oldName = scanner.nextLine();
 
             // 파일 이름 유효성 검사
-            if (!fileHandler.isValidFileName(oldName)) {
+            if (!validFile.isValidFileName(oldName)) {
                 continue;
             }
             // 파일 유무 유효성검사
-            if (!fileHandler.isFileValid(directoryPath + "/" + oldName)){
+            if (!validFile.isFileValid(directoryPath + "/" + oldName)){
                 continue;
 
             }
@@ -75,7 +75,7 @@ public class FileRenamer {
             System.out.print("새 파일 이름 입력: ");
             newName = scanner.nextLine();
             // 파일 이름 유효성 검사
-            if (!fileHandler.isValidFileName(newName)) {
+            if (!validFile.isValidFileName(newName)) {
                 continue;
             }
             // 동일한 이름의 파일이 이미 존재하는지 검사
@@ -104,7 +104,7 @@ public class FileRenamer {
         while (true) {
             System.out.print("변경할 파일의 공통 이름 입력: ");
             baseName = scanner.nextLine();
-            if (fileHandler.isValidFileName(baseName)) {
+            if (validFile.isValidFileName(baseName)) {
                 break;
             }
         }
@@ -161,7 +161,7 @@ public class FileRenamer {
 
     // 파일 이름 변경 로직 (공통)
     private boolean rename(File oldFile, File newFile) {
-        if (!fileHandler.isFileValid(oldFile.getPath())) {
+        if (!validFile.isFileValid(oldFile.getPath())) {
             return false;
         }
 
