@@ -8,6 +8,9 @@ public class Main {
         System.out.print("파일이 있는 디렉터리 경로 입력: ");
         String directoryPath = scanner.nextLine();
 
+        // 파일 목록 출력
+        FileUtils.listFiles(directoryPath);
+
         System.out.print("변경할 파일 이름 입력: ");
         String oldName = scanner.nextLine();
 
