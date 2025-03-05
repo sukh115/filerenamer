@@ -1,9 +1,21 @@
 import java.io.File;
 
-public class FileUtils extends FileHandler {
-    public void listFiles(String directoryPath) {
+public class FileUtils {
+    // 1. 속성
+    private String directoryPath;
+    private FileHandler fileHandler;
 
-        if (!isDirectoryValid(directoryPath)){
+    // 2. 생성자
+    public FileUtils(String directoryPath, FileHandler fileHandler){
+        this.directoryPath = directoryPath;
+        this.fileHandler = fileHandler;
+    };
+
+    // 3. 기능
+    // 파일 리스트
+    public void listFiles() {
+        // 디렉터리 유효성 검사
+        if (!fileHandler.isDirectoryValid(directoryPath)){
             return;
         }
 
