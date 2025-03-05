@@ -1,23 +1,89 @@
 import java.io.File;
+import java.util.Scanner;
 
-public class FileRenamer {
-    public static void renameFile(String directoryPath, String oldName, String newName){
-        File  oldFile = new File(directoryPath, oldName); // 기존 파일
-        File newFile = new File(directoryPath, newName); // 신규 파일
+public class FileRenamer extends FileHandler {
 
-        // 기존 파일이 존재하는지 확인
-        if (!oldFile.exists()) {
-            System.out.println("해당 파일이 존재하지 않습니다." + oldName);
+    // 파일 이름 변경 작업을 여기서 처리 (단일 or 여러 개)
+    public void renameFiles(String directoryPath, Scanner scanner) {
+        if (!isDirectoryValid(directoryPath)) {
             return;
         }
 
-        // 파일 이름 변경 시도
-        if (oldFile.renameTo(newFile)) {
-            System.out.println("파일 이름 변경 성공 : " + oldName +  " 에서 " + newName +" 으로 변경");
-        }else {
-            System.out.println("파일 이름 변경 실패");
+        // 🔹 파일 목록 출력
+        FileUtils fileUtils = new FileUtils();
+        fileUtils.listFiles(directoryPath);
+
+        // 🔹 사용자 선택 (1: 단일 변경, 2: Batch Rename)
+        System.out.println("\n[1] 단일 파일 이름 변경");
+        System.out.println("[2] 여러 파일 한꺼번에 변경 (Batch Rename)");
+        System.out.print("원하는 작업 번호 입력: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 제거
+
+        if (choice == 1) {
+            renameSingleFile(directoryPath, scanner);
+        } else if (choice == 2) {
+            batchRenameFiles(directoryPath, scanner);
+        } else {
+            System.out.println("잘못된 입력입니다.");
+        }
+    }
+
+    // 🔹 단일 파일 변경 처리
+    private void renameSingleFile(String directoryPath, Scanner scanner) {
+        System.out.print("변경할 파일 이름 입력: ");
+        String oldName = scanner.nextLine();
+
+        System.out.print("새 파일 이름 입력: ");
+        String newName = scanner.nextLine();
+
+        File oldFile = new File(directoryPath, oldName);
+        File newFile = new File(directoryPath, newName);
+        rename(oldFile, newFile);
+    }
+
+    // 🔹 여러 개 파일 Batch Rename 처리
+    private void batchRenameFiles(String directoryPath, Scanner scanner) {
+        System.out.print("변경할 파일의 공통 이름 입력: ");
+        String baseName = scanner.nextLine();
+
+        System.out.print("시작 번호 입력: ");
+        int startNumber = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 제거
+
+        File folder = new File(directoryPath);
+        File[] files = folder.listFiles();
+
+        int count = startNumber;
+        for (File file : files) {
+            if (file.isFile()) {
+                String extension = "";
+                int dotIndex = file.getName().lastIndexOf(".");
+                if (dotIndex != -1) {
+                    extension = file.getName().substring(dotIndex);
+                }
+
+                String newName = baseName + "_" + count + extension;
+                File newFile = new File(directoryPath, newName);
+                rename(file, newFile);
+                count++;
+            }
+        }
+        System.out.println("Batch Rename 완료!");
+    }
+
+    // 🔹 파일 이름 변경 로직 (공통)
+    private boolean rename(File oldFile, File newFile) {
+        if (!isFileValid(oldFile.getPath())) {
+            return false;
         }
 
-
+        if (oldFile.renameTo(newFile)) {
+            System.out.println("파일 이름 변경 성공: " + oldFile.getName() + " → " + newFile.getName());
+            return true;
+        } else {
+            System.out.println("파일 이름 변경 실패: " + oldFile.getName());
+            return false;
+        }
     }
 }
