@@ -17,8 +17,6 @@ public class Main {
             fileRenamer.renameSingleFile(); // 3. 단일 파일 이름 변경
         } else if (choice == 2) {
             fileRenamer.renameMultipleFiles(); // 4. 여러 파일 이름 한꺼번에 변경
-        } else {
-            System.out.println("파일 변경 작업이 취소되었습니다.");
         }
 
         scanner.close();
