@@ -35,4 +35,17 @@ public class ValidFile {
         }
         return true;
     }
+    // 숫자 유효성 검사
+    public boolean isValidNumber(Integer number) {
+        if (number == null) {
+            System.out.println("숫자가 입력되지 않았습니다.");
+            return false;
+        }
+        if (number < 0) {
+            System.out.println("유효하지 않은 숫자 입력 : " + number);
+            return false;
+        }
+        return true;
+    }
+
 }

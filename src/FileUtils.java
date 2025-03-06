@@ -27,7 +27,7 @@ public class FileUtils {
     }
 
     // 파일 이름 변경 실행
-    public boolean RunRename(String oldName, String newName) {
+    public boolean runRename(String oldName, String newName ) {
         File oldFile = new File(directoryPath, oldName);
         File newFile = new File(directoryPath, newName);
 
@@ -45,6 +45,7 @@ public class FileUtils {
         if (!validFile.isValidFileName(newName)){
             return false;
         }
+
 
         // 파일 이름 변경 실행
         if (oldFile.renameTo(newFile)) {
