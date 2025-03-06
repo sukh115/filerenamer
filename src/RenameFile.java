@@ -1,13 +1,13 @@
 import java.io.File;
 import java.util.Scanner;
 
-public class FileRenamer {
+public class RenameFile {
     private final String directoryPath; // 디렉터리 경로 저장
     private final ValidFile validFile; // 파일 및 디렉터리 유효성 검사 객체
     private final Scanner scanner; // 사용자 입력을 받기 위한 Scanner 객체
     private final FileUtils fileUtils; // 파일 유틸리티 클래스
 
-    public FileRenamer(String directoryPath) {
+    public RenameFile(String directoryPath) {
         this.directoryPath = directoryPath;
         this.validFile = new ValidFile();
         this.scanner = new Scanner(System.in);
