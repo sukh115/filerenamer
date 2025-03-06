@@ -44,32 +44,49 @@ public class RenameFile {
 
     // 3. 단일 파일 이름 변경 실행
     public void renameSingleFile() {
-        System.out.print("변경할 파일 이름 입력: ");
-        String oldName = scanner.nextLine();
-        System.out.print("새 파일 이름 입력: ");
-        String newName = scanner.nextLine();
+        while (true) {
+            System.out.print("변경할 파일 이름 입력: ");
+            String oldName = scanner.nextLine();
+            System.out.print("새 파일 이름 입력: ");
+            String newName = scanner.nextLine();
 
-        fileUtils.renameFile(oldName, newName); // 파일 이름 변경 수행
+            if (fileUtils.RunRename(oldName, newName)) { // 성공하면 true 반환
+                break; // 파일 이름 변경 수행
+            }
+
+        }
     }
 
     // 4. 여러 파일 이름 한꺼번에 변경
     public void renameMultipleFiles() {
-        System.out.print("변경할 파일의 공통 이름 입력: ");
-        String baseName = scanner.nextLine();
-        System.out.print("시작 번호 입력: ");
-        int startNumber = scanner.nextInt();
-        scanner.nextLine();
+        while (true){
+            System.out.print("변경할 파일의 공통 이름 입력: ");
+            String baseName = scanner.nextLine();
+            System.out.print("시작 번호 입력: ");
+            int startNumber = scanner.nextInt();
+            scanner.nextLine();
 
-        File folder = new File(directoryPath);
-        File[] files = folder.listFiles();
-        int count = startNumber;
+            File folder = new File(directoryPath);
+            File[] files = folder.listFiles();
+            int count = startNumber;
 
-        for (File file : files) {
-            if (file.isFile()) {
-                String newName = baseName + "_" + count++;  // 새로운 이름 생성
-                fileUtils.renameFile(file.getName(), newName); // 파일 이름 변경 수행
+            boolean renameFailed = false;
+
+
+            for (File file : files) {
+                if (file.isFile()) {
+                    String newName = count++ +  "_" +  baseName;  // 새로운 이름 생성
+                    if (!fileUtils.RunRename(file.getName(),newName)) { // 파일 이름 변경 수행
+                        renameFailed = true;
+                        break;
+                    }
+                }
+            }
+            if (!renameFailed) {
+                break;
             }
         }
-        System.out.println("Batch Rename 완료!");
     }
 }
+
+
