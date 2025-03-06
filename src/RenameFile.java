@@ -59,7 +59,7 @@ public class RenameFile {
 
     // 4. 여러 파일 이름 한꺼번에 변경
     public void renameMultipleFiles() {
-        while (true){
+        while (true) {
             System.out.print("변경할 파일의 공통 이름 입력: ");
             String baseName = scanner.nextLine();
             System.out.print("시작 번호 입력: ");
@@ -69,21 +69,24 @@ public class RenameFile {
             File folder = new File(directoryPath);
             File[] files = folder.listFiles();
             int count = startNumber;
+            boolean anyFileRenamed = false; // 변경된 파일이 하나라도 있는지 확인
 
-            boolean renameFailed = false;
-
-
+            // 파일 이름 변경
             for (File file : files) {
                 if (file.isFile()) {
-                    String newName = count++ +  "_" +  baseName;  // 새로운 이름 생성
-                    if (!fileUtils.RunRename(file.getName(),newName)) { // 파일 이름 변경 수행
-                        renameFailed = true;
-                        break;
+                    String newName = count++ + "_" + baseName;
+
+                    if (!fileUtils.RunRename(file.getName(), newName)) {
+                        System.out.println("파일 변경 실패 (건너뜀): " + file.getName());
+                        continue; // 실패한 파일을 무시하고 다음 파일로 이동
                     }
+
+                    anyFileRenamed = true; // 최소한 하나의 파일이 변경됨
                 }
             }
-            if (!renameFailed) {
-                break;
+
+            if (anyFileRenamed) {
+                break; // 하나라도 변경 성공한 경우 루프 종료
             }
         }
     }
